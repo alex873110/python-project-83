@@ -23,14 +23,18 @@ crossorigin="anonymous">
        </header>
   <main class="flex-grow-1 ">
     <div class="container-lg mt-3">
-      <h1>{{ title_text }}</h1>
-        <label for="formControlInput" class="form-label">
-        Бесплатно проверяйте сайты на SEO-пригодность
-        </label>
-        <form action="/urls " method="post" class="d-flex justify-content-center" required="">
-          <input type="text" name="url" placeholder="https://www.example.com" value="" class="form-control form-control-lg">
-          <input type="submit" class="btn btn-primary  btn-lg ms-3 px-5 text-uppercase mx-3" value="Проверить">
-        </form>
+      <div class="row">
+        <div class="col-12 col-md-10 col-lg-8 mx-auto border rounded-3 bg-light p-5">
+          <h1>{{ title_text }}</h1>
+          <label for="formControlInput" class="form-label">
+          Бесплатно проверяйте сайты на SEO-пригодность
+          </label>
+          <form action="/urls " method="post" class="d-flex justify-content-center" required="">
+            <input type="text" name="url" placeholder="https://www.example.com" value="" class="form-control form-control-lg">
+            <input type="submit" class="btn btn-primary  btn-lg ms-3 px-5 text-uppercase mx-3" value="Проверить">
+          </form>
+        </div>
+      </div>
     </div>
   </main>  
   </body>
