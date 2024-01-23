@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, flash, redirect
- 
+from flask import Flask, render_template
+# from flask import request, flash, redirect
+
 app = Flask(__name__)
- 
- 
+
+
 @app.route('/')
 def basic():
     title_text = 'Анализатор страниц'
