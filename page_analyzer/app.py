@@ -1,6 +1,10 @@
-from flask import Flask, render_template
-# from flask import request, flash, redirect
+from flask import Flask, render_template, request, flash, redirect
+from flask import get_flashed_messages, url_for
+import psycopg2
 from dotenv import load_dotenv
+from urllib.parse import urlparse
+import validators
+import requests
 import os
 
 load_dotenv()
@@ -30,12 +34,10 @@ def url_add():
         url_to_check = db.get_url_by_name(conn, url_name)
         if url_to_check:
             flash('Страница уже существует', 'info')
-            return redirect(url_for('url_info', id=url_to_check[0]))
+            return render_template('basic.html', title_text='Анализатор страниц')
         url_id = db.create_url(conn, url_name)
     flash('Страница успешно добавлена', 'success')
-    return redirect(url_for('url_info', id=url_id))
-
-
+    return render_template('basic.html', title_text='Анализатор страниц')
 
 @app.get('/urls/<id>')
 def url_info(id):
