@@ -1,4 +1,11 @@
 import validators
+from urllib.parse import urlparse
+
+
+def normalize_url(url):
+    parsed_url = urlparse(url)
+    normalize_url = f'{parsed_url.scheme}://{parsed_url.netloc}'
+    return normalize_url
 
 
 def validate(url):
