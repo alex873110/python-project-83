@@ -31,6 +31,7 @@ def url_add():
             flash(error, 'error')
         return render_template(
             'basic.html',
+            messages=get_flashed_messages(with_categories=True)
         ), 422
     url_normalized = normalize_url(url_name)
     with psycopg2.connect(DATABASE_URL) as conn:
