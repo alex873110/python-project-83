@@ -29,6 +29,7 @@ crossorigin="anonymous">
           <label for="formControlInput" class="form-label">
           Бесплатно проверяйте сайты на SEO-пригодность
           </label>
+          {% include "flashmsg.html" %}
           <form action="/urls " method="post" class="d-flex justify-content-center" required="">
             <input type="text" name="url" placeholder="https://www.example.com" value="" class="form-control form-control-lg">
             <input type="submit" class="btn btn-primary  btn-lg ms-3 px-5 text-uppercase mx-3" value="Проверить">
