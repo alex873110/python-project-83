@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block h1 %}Сайты{% endblock %}
+
+{% block body %}
+<div class="table-responsive">
+  <table data-test="urls" class="table table-bordered table-hover text-nowrap" 
+data-test="urls">
+    <thead>
+    <tr>
+      <th>ID</th>
+      <th>Имя</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% if urls %}
+        {% for url in urls %}
+        <tr>
+          <td>{{url.id}}</td>
+          <td>{{url.name}}</td>
+        </tr>
+        {% endfor %}
+        {% endif %}  
+    </tbody>
+  </table>
+</div>
+
+    </div>
+{% endblock %}
