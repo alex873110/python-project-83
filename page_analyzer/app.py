@@ -4,7 +4,7 @@ import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
 from urllib.parse import urlparse
-from page_analyzer.url_functions import normalize_url, validate, get_url_by_name
+from page_analyzer.url_functions import normalize_url, validate
 import validators
 import requests
 import os
