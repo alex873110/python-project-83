@@ -56,11 +56,11 @@ def url_add():
 def get_page_urls():
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur:
-        cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
-        urls = cur.fetchall()
-        urls_names = []
-        for url_info in urls:
-            urls_names.append(url_info.name)
+            cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
+            urls = cur.fetchall()
+            urls_names = []
+            for url_info in urls:
+                urls_names.append(url_info.name)
         conn.close()
     return render_template('urls.html', urls=urls_names)
 
