@@ -49,7 +49,9 @@ def url_add():
                                        messages=get_flashed_messages(with_categories=True)
                                       )
             cur.execute('''INSERT INTO urls (name, created_at)
-                        VALUES (%s, %s) RETURNING id''', (url_normalized, datetime.now()))
+                         VALUES (%s, %s) RETURNING id''',
+                         (url_normalized, datetime.now())
+                       )
             conn.commit()
             id = cur.fetchone()[0]
     flash('Страница успешно добавлена', 'success')
@@ -64,7 +66,11 @@ def get_page_urls():
             urls = cur.fetchall()
             urls_names = []
             for url_info in urls:
-                urls_names.append(url_info.name)
+                urls = {
+                    'id': url_info.id,
+                    'name': url_info.name
+                }
+                urls_names.append(urls)
         conn.close()
     return render_template('urls.html', urls=urls_names)
 
