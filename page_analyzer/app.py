@@ -53,7 +53,7 @@ def url_add():
             conn.commit()
             id = cur.fetchone()[0]
     flash('Страница успешно добавлена', 'success')
-    return redirect(url_for('url_info', id=id)
+    return redirect(url_for('url_info', id=id))
 
 
 @app.get('/urls')
