@@ -64,15 +64,8 @@ def get_page_urls():
         with conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur:
             cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
             urls = cur.fetchall()
-            urls_names = []
-            for url_info in urls:
-                urls = {
-                    'id': url_info.id,
-                    'name': url_info.name
-                }
-                urls_names.append(urls)
         conn.close()
-    return render_template('urls.html', urls=urls_names)
+    return render_template('urls.html', urls=urls)
 
 
 @app.get('/urls/<id>')
