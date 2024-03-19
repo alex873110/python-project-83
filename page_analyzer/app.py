@@ -45,7 +45,7 @@ def url_add():
                 conn.close
                 flash('Страница уже существует', 'info')
                 return render_template('basic.html',
-                                       title_text='Анализатор страниц'
+                                       title_text='Анализатор страниц',
                                        messages=get_flashed_messages(with_categories=True)
                                       )
             cur.execute('''INSERT INTO urls (name, created_at)
