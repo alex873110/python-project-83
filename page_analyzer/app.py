@@ -53,7 +53,7 @@ def url_add():
             conn.commit()
             id = cur.fetchone()[0]
     flash('Страница успешно добавлена', 'success')
-    return render_template('basic.html', title_text='Анализатор страниц')
+    return redirect(url_for('url_info', id=id)
 
 
 @app.get('/urls')
@@ -81,6 +81,6 @@ def url_info(id):
         if not url_info:
             abort(404)
         return render_template(
-           'page_url.html',
+           'url_info.html',
             url=url_info
         )
