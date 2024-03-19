@@ -30,7 +30,7 @@ def url_add():
         for error in errors:
             flash(error, 'error')
         return render_template(
-            'basic.html',
+            'index.html',
             messages=get_flashed_messages(with_categories=True)
         ), 422
     url_normalized = normalize_url(url_name)
@@ -44,8 +44,7 @@ def url_add():
             if url_info:
                 conn.close
                 flash('Страница уже существует', 'info')
-                return render_template('basic.html',
-                                       title_text='Анализатор страниц',
+                return render_template('index.html',
                                        messages=get_flashed_messages(with_categories=True)
                                       )
             cur.execute('''INSERT INTO urls (name, created_at)
