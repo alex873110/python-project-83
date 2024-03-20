@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect
-from flask import get_flashed_messages, url_for
+from flask import get_flashed_messages, url_for, abort
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
@@ -35,7 +35,9 @@ def url_add():
         ), 422
     url_normalized = normalize_url(url_name)
     with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur:
+        with conn.cursor(
+          cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
             cur.execute('''SELECT
                         id, name, created_at
                         FROM urls
@@ -44,24 +46,27 @@ def url_add():
             if url_info:
                 conn.close
                 flash('Страница уже существует', 'info')
-                return render_template('index.html',
-                                       messages=get_flashed_messages(with_categories=True)
-                                      )
+                return render_template(
+                 'index.html',
+                 messages=get_flashed_messages(with_categories=True)
+                )
             cur.execute('''INSERT INTO urls (name, created_at)
-                         VALUES (%s, %s) RETURNING id''',
-                         (url_normalized, datetime.now())
-                       )
+                        VALUES (%s, %s) RETURNING id''',
+                        (url_normalized, datetime.now())
+                        )
             conn.commit()
             id = cur.fetchone()[0]
         conn.close()
     flash('Страница успешно добавлена', 'success')
-    return redirect(url_for('get_page_urls'))
+    return redirect(url_for('url_info', id-id))
 
 
 @app.get('/urls')
 def get_page_urls():
     with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur:
+        with conn.cursor(
+          cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
             cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
             urls = cur.fetchall()
         conn.close()
@@ -71,15 +76,17 @@ def get_page_urls():
 @app.get('/urls/<id>')
 def url_info(id):
     with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(cursor_factory=psycopg2.extras.NamedTupleCursor) as cur:
+        with conn.cursor(
+         cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
             cur.execute('''SELECT
                     id, name, created_at
                     FROM urls
                     WHERE id = %s''', (id,))
-            url_info = cur.fetchone() 
+            url_info = cur.fetchone()
         if not url_info:
             abort(404)
         return render_template(
            'url_info.html',
-            url=url_info
+           url=url_info
         )
