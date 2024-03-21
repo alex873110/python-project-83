@@ -22,6 +22,18 @@ def basic():
     return render_template('basic.html', title_text=title_text)
 
 
+@app.get('/urls')
+def get_page_urls():
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor(
+          cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
+            cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
+            urls = cur.fetchall()
+        conn.close()
+    return render_template('urls.html', urls=urls)
+
+
 @app.post('/urls')
 def url_add():
     url_name = request.form.get('url')
@@ -57,20 +69,8 @@ def url_add():
             conn.commit()
             id = cur.fetchone()[0]
         conn.close()
-    flash('Страница успешно добавлена', 'success')
-    return redirect(url_for(url_info, id=id))
-
-
-@app.get('/urls')
-def get_page_urls():
-    with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(
-          cursor_factory=psycopg2.extras.NamedTupleCursor
-        ) as cur:
-            cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
-            urls = cur.fetchall()
-        conn.close()
-    return render_template('urls.html', urls=urls)
+#    flash('Страница успешно добавлена', 'success')
+    return redirect(url_for('url_info', id=id))
 
 
 @app.get('/urls/<id>')
