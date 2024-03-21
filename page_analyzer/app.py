@@ -30,7 +30,7 @@ def get_page_urls():
         ) as cur:
             cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
             urls = cur.fetchall()
-        conn.close()
+#        conn.close()
     return render_template('urls.html', urls=urls)
 
 
