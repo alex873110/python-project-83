@@ -58,7 +58,7 @@ def url_add():
             id = cur.fetchone()[0]
         conn.close()
     flash('Страница успешно добавлена', 'success')
-    return render_template('index.html') 
+    return redirect(url_for(url_info, id=id))
 
 
 @app.get('/urls')
