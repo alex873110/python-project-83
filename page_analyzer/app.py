@@ -58,7 +58,7 @@ def url_add():
             id = cur.fetchone()[0]
         conn.close()
     flash('Страница успешно добавлена', 'success')
-    return redirect(url_for('url_info', id=id))
+    return redirect(url_for('basic'))
 
 
 @app.get('/urls')
@@ -75,18 +75,17 @@ def get_page_urls():
 
 @app.get('/urls/<id>')
 def url_info(id):
-#    with psycopg2.connect(DATABASE_URL) as conn:
-#        with conn.cursor(
-#         cursor_factory=psycopg2.extras.NamedTupleCursor
-#        ) as cur:
-#            cur.execute('''SELECT
-#                    id, name, created_at
-#                    FROM urls
-#                    WHERE id = %s''', (id,))
-#            url_info = cur.fetchone()
-#        if not url_info:
-#            abort(404)
-    url_info = {name: 'one', id: 1, created_at: 2020}    
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor(
+         cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
+            cur.execute('''SELECT
+                    id, name, created_at
+                    FROM urls
+                    WHERE id = %s''', (id,))
+            url_info = cur.fetchone()
+        if not url_info:
+            abort(404)
     return render_template(
        'url_info.html',
        url=url_info
