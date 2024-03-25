@@ -30,18 +30,18 @@ def get_page_urls():
         ) as cur:
             cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
             urls = cur.fetchall()
-    for url in urls:
-        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
-            cur.execute('''SELECT created_at
-                         FROM url_checks
-                         WHERE url_id = %s
-                         ORDER BY id DESC;''',
-                         (url['id']))
-            last_check = cur.fetchone()
-            if last_check:
-                url['last_check'] = last_check
-            else:
-                url['last_check'] = ''
+        for url in urls:
+            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+                cur.execute('''SELECT created_at
+                             FROM url_checks
+                             WHERE url_id = %s
+                             ORDER BY id DESC;''',
+                             (url['id']))
+                last_check = cur.fetchone()
+                if last_check:
+                    url['last_check'] = last_check
+                else:
+                    url['last_check'] = ''
     return render_template('urls.html', urls=urls)
 
 
