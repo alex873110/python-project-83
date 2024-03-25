@@ -127,7 +127,7 @@ def url_check(id):
                 abort(404)
             url = url_info.name
         check = requests.get(url)
-        status = check.status_code
+        status = int(check.status_code)
         with conn.cursor(
           cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
