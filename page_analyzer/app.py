@@ -125,7 +125,7 @@ def url_check(id):
             url_info = cur.fetchone()
             if not url_info:
                 abort(404)
-            url = url_info['name']
+            url = url_info.name
         check = requests.get(url)
         status = check.status_code
         with conn.cursor(
