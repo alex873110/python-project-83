@@ -128,15 +128,18 @@ def url_check(id):
             if not url_info:
                 abort(404)
             url = url_info.name
-        check = requests.get(url)
-        status = int(check.status_code)
-        with conn.cursor(
-          cursor_factory=psycopg2.extras.NamedTupleCursor
-        ) as cur:
-            cur.execute('''INSERT INTO url_checks (url_id, status_code, created_at)
-                        VALUES (%s, %s, %s)''',
-                        (id, status, datetime.now().date())
-                        )
+        try:
+            check = requests.get(url)
+            status = int(check.status_code)
+            with conn.cursor(
+              cursor_factory=psycopg2.extras.NamedTupleCursor
+            ) as cur:
+                cur.execute('''INSERT INTO url_checks (url_id, status_code, created_at)
+                            VALUES (%s, %s, %s)''',
+                            (id, status, datetime.now().date())
+                            )
+            flash('Страница успешно проверена', 'alert-success')
             conn.commit()
-        
-        return redirect(url_for('url_info', id=id))
+        except request_error:
+            flash('Произошла ошибка при проверке', 'alert-danger')
+    return redirect(url_for('url_info', id=id))
