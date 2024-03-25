@@ -26,7 +26,7 @@ def basic():
 def get_page_urls():
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor(
-          cursor_factory=psycopg2.extras.NamedTupleCursor
+          cursor_factory=psycopg2.extras.RealDictCursor
         ) as cur:
             cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
             urls = cur.fetchall()
