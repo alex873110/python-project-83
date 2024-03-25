@@ -132,7 +132,7 @@ def url_check(id):
           cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
             cur.execute('''INSERT INTO url_checks (url_id, status_code, created_at)
-                        VALUES (%s, %s)''',
+                        VALUES (%s, %s, %s)''',
                         (id, status, datetime.now().date())
                         )
             conn.commit()
