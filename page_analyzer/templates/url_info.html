@@ -59,7 +59,7 @@
     </thead>
     <tbody>  
       {% if url_checks %}
-        {% for id, created_at in url_checks %}
+        {% for id, status_code, created_at in url_checks %}
         <tr>
           <td>{{id}}</td>
           <td>{{status_code}}</td>
