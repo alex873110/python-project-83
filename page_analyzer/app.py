@@ -93,11 +93,11 @@ def url_info(id):
             cur.execute('''SELECT
                     id, created_at
                     FROM url_checkd
-                    WHERE url_id = %s ORDER BY id DESC'''', (id,))
+                    WHERE url_id = %s ORDER BY id DESC''', (id,))
             url_checks = cur.fetchall()
     return render_template(
        'url_info.html',
-       url=url_info, url_checks=url_checks)
+       url=url_info, url_checks=url_checks
     )
 
 
