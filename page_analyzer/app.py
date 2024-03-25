@@ -87,12 +87,10 @@ def url_info(id):
         if not url_info:
             abort(404)
     with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(
-          cursor_factory=psycopg2.extras.NamedTupleCursor
-        ) as cur:
+        with conn.cursor() as cur:
             cur.execute('''SELECT
                     id, created_at
-                    FROM url_checkd
+                    FROM url_checks
                     WHERE url_id = %s ORDER BY id DESC''', (id,))
             url_checks = cur.fetchall()
     return render_template(
