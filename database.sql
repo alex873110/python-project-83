@@ -1,3 +1,5 @@
+DROP TABLE IF EXISTS urls, url_checks;
+
 CREATE TABLE urls (
     id SERIAL PRIMARY KEY,
     name varchar(255),
