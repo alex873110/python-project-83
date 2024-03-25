@@ -55,7 +55,7 @@ def url_add():
     errors = validate(url_name)
     if errors:
         for error in errors:
-            flash(error, 'error')
+            flash(error, 'alert-error')
         return render_template(
             'index.html',
             messages=get_flashed_messages(with_categories=True)
@@ -72,7 +72,7 @@ def url_add():
             url_info = cur.fetchone()
             if url_info:
                 conn.close
-                flash('Страница уже существует', 'info')
+                flash('Страница уже существует', 'alert-info')
                 return render_template(
                  'index.html',
                  messages=get_flashed_messages(with_categories=True)
