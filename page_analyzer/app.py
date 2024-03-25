@@ -55,7 +55,7 @@ def url_add():
     errors = validate(url_name)
     if errors:
         for error in errors:
-            flash(error, 'alert-error')
+            flash(error, 'alert-danger')
         return render_template(
             'index.html',
             messages=get_flashed_messages(with_categories=True)
