@@ -61,7 +61,7 @@
         {% for id, created_at in url_checks %}
         <tr>
           <td>{{id}}</td>
-          <td>{{created_at}}</td>
+          <td>{{created_at.date()}}</td>
         </tr>
         {% endfor %}
       {% endif %}
