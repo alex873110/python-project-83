@@ -53,6 +53,7 @@
     <thead>
       <tr>
         <th>ID</th>
+        <th>Код ответа</th>
         <th>Дата создания</th>
       </tr>
     </thead>
@@ -61,6 +62,7 @@
         {% for id, created_at in url_checks %}
         <tr>
           <td>{{id}}</td>
+          <td>{{status_code}}</td>
           <td>{{created_at.date()}}</td>
         </tr>
         {% endfor %}

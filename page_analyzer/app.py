@@ -102,7 +102,7 @@ def url_info(id):
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as cur:
             cur.execute('''SELECT
-                    id, created_at
+                    id, status_code, created_at
                     FROM url_checks
                     WHERE url_id = %s ORDER BY id DESC''', (id,))
             url_checks = cur.fetchall()
@@ -119,9 +119,21 @@ def url_check(id):
         with conn.cursor(
           cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
-            cur.execute('''INSERT INTO url_checks (url_id, created_at)
+            cur.execute('''SELECT
+                    name FROM urls
+                    WHERE id = %s''', (id,))
+            url_info = cur.fetchone()
+            if not url_info:
+                abort(404)
+            url = url_info['name']
+        check = requests.get(url)
+        status = check.status_code
+        with conn.cursor(
+          cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
+            cur.execute('''INSERT INTO url_checks (url_id, status_code, created_at)
                         VALUES (%s, %s)''',
-                        (id, datetime.now().date())
+                        (id, status, datetime.now().date())
                         )
             conn.commit()
         
