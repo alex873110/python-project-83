@@ -41,9 +41,11 @@ def get_page_urls():
                 cur.execute(query, [url['id']])
                 last_check = cur.fetchone()
                 if last_check:
-                    url['last_check'] = last_check['created_at'].date()
+                    url['check_date'] = last_check['created_at'].date()
+                    url['status_code'] = last_check['status_code']
                 else:
-                    url['last_check'] = ''
+                    url['check_date'] = ''
+                    url['status_code'] = ''
     return render_template('urls.html', urls=urls)
 
 
