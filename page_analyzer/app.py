@@ -90,3 +90,17 @@ def url_info(id):
        'url_info.html',
        url=url_info
     )
+
+
+@app.post('/urls/<id>/checks')
+def url_check(id):
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor(
+          cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
+            cur.execute('''INSERT INTO urls_check (url_id, created_at)
+                        VALUES (%s, %s)''',
+                        (id, datetime.now())
+                        )
+            conn.commit()
+        return redirect(url_for('url_info', id=id))
