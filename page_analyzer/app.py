@@ -31,12 +31,12 @@ def get_page_urls():
             cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
             urls = cur.fetchall()
     for url in urls:
-        with conn.cursor() as cur:
+        with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
             cur.execute('''SELECT created_at
                          FROM url_checks
                          WHERE url_id = %s
                          ORDER BY id DESC;''',
-                         (url[0]))
+                         (url.id))
             last_check = cur.fetchone()
             if last_check:
                 url['last_check'] = last_check
