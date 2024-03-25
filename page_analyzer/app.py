@@ -98,7 +98,7 @@ def url_check(id):
         with conn.cursor(
           cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
-            cur.execute('''INSERT INTO urls_check (url_id, created_at)
+            cur.execute('''INSERT INTO url_checks (url_id, created_at)
                         VALUES (%s, %s)''',
                         (id, datetime.now())
                         )
