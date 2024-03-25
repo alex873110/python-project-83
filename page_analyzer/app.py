@@ -66,17 +66,13 @@ def url_add():
           cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
             cur.execute('''SELECT
-                        id, name, created_at
-                        FROM urls
+                        id FROM urls
                         WHERE name = %s''', (url_normalized,))
             url_info = cur.fetchone()
             if url_info:
                 conn.close
                 flash('Страница уже существует', 'alert-info')
-                return render_template(
-                 'index.html',
-                 messages=get_flashed_messages(with_categories=True)
-                )
+                return redirect(url_for('url_info', id=int(url_info)))
             cur.execute('''INSERT INTO urls (name, created_at)
                         VALUES (%s, %s) RETURNING id''',
                         (url_normalized, datetime.now())
