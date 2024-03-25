@@ -108,7 +108,7 @@ def url_check(id):
         ) as cur:
             cur.execute('''INSERT INTO url_checks (url_id, created_at)
                         VALUES (%s, %s)''',
-                        (id, datetime.now()..date())
+                        (id, datetime.now().date())
                         )
             conn.commit()
         
