@@ -86,14 +86,24 @@ def url_info(id):
             url_info = cur.fetchone()
         if not url_info:
             abort(404)
+    with psycopg2.connect(DATABASE_URL) as conn:
+        with conn.cursor(
+          cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
+            cur.execute('''SELECT
+                    id, created_at
+                    FROM url_checkd
+                    WHERE url_id = %s ORDER BY id DESC'''', (id,))
+            url_checks = cur.fetchall()
     return render_template(
        'url_info.html',
-       url=url_info
+       url=url_info, url_checks=url_checks)
     )
 
 
 @app.post('/urls/<id>/checks')
 def url_check(id):
+    id = int(id)
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor(
           cursor_factory=psycopg2.extras.NamedTupleCursor
@@ -103,4 +113,5 @@ def url_check(id):
                         (id, datetime.now())
                         )
             conn.commit()
+        
         return redirect(url_for('url_info', id=id))
