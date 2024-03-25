@@ -110,7 +110,8 @@ def url_info(id):
             url_checks = cur.fetchall()
     return render_template(
        'url_info.html',
-       url=url_info, url_checks=url_checks
+       url=url_info, url_checks=url_checks,
+       messages=get_flashed_messages(with_categories=True),
     )
 
 

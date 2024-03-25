@@ -19,11 +19,11 @@
     </div>
     </nav>
   </header>
-        {% if messages %}
-            {% for category, message in messages %}
-                <div class="alert {{ category }}" role="alert">{{ message }}</div>
-            {% endfor %}
-        {% endif %}  
+      {% if messages %}
+        {% for category, message in messages %}
+          <div class="alert {{ category }}" role="alert">{{ message }}</div>
+        {% endfor %}
+      {% endif %}  
   <main class="flex-grow-1">
     <div class="container-lg mt-3">
       <h1>Сайт: {{url['name']}}</h1>
