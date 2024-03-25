@@ -72,7 +72,7 @@ def url_add():
             if url_info:
                 conn.close
                 flash('Страница уже существует', 'alert-info')
-                return redirect(url_for('url_info', id=int(url_info)))
+                return redirect(url_for('url_info', id=url_info.id))
             cur.execute('''INSERT INTO urls (name, created_at)
                         VALUES (%s, %s) RETURNING id''',
                         (url_normalized, datetime.now())
