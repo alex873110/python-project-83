@@ -36,7 +36,7 @@ def get_page_urls():
                          FROM url_checks
                          WHERE url_id = %s
                          ORDER BY id DESC;''',
-                         (url.id))
+                         (url['id']))
             last_check = cur.fetchone()
             if last_check:
                 url['last_check'] = last_check
