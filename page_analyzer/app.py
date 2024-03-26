@@ -5,6 +5,7 @@ import psycopg2.extras
 from dotenv import load_dotenv
 from urllib.parse import urlparse
 from page_analyzer.url_functions import normalize_url, validate
+from page_analyzer.html_parser import get_seo
 import validators
 import requests
 from requests import RequestException
@@ -101,8 +102,8 @@ def url_info(id):
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as cur:
             cur.execute('''SELECT
-                    id, status_code, created_at
-                    FROM url_checks
+                    id, status_code, h1, title, desription,
+                    created_at FROM url_checks
                     WHERE url_id = %s ORDER BY id DESC''', (id,))
             url_checks = cur.fetchall()
     return render_template(
@@ -129,12 +130,18 @@ def url_check(id):
         try:
             check = requests.get(url)
             status = int(check.status_code)
+            url_data = get_seo(check.text)
+            title = url_data('title')
+            h1 = url_data('h1')
+            description = url_data('desription')
             with conn.cursor(
               cursor_factory=psycopg2.extras.NamedTupleCursor
             ) as cur:
-                cur.execute('''INSERT INTO url_checks (url_id, status_code, created_at)
-                            VALUES (%s, %s, %s)''',
-                            (id, status, datetime.now().date())
+                cur.execute('''INSERT INTO url_checks (url_id, status_code,
+                            h1, title, desription, created_at)
+                            VALUES (%s, %s, %s, %s, %s, %s)''',
+                            (id, status, h1, title, description, 
+                             datetime.now().date())
                             )
             flash('Страница успешно проверена', 'alert-success')
             conn.commit()
