@@ -131,9 +131,9 @@ def url_check(id):
             check = requests.get(url)
             status = int(check.status_code)
             url_data = get_seo(check.text)
-            title = url_data('title')
-            h1 = url_data('h1')
-            description = url_data('description')
+            title = url_data['title']
+            h1 = url_data['h1']
+            description = url_data['description']
             with conn.cursor(
               cursor_factory=psycopg2.extras.NamedTupleCursor
             ) as cur:
