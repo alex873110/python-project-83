@@ -102,7 +102,7 @@ def url_info(id):
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor() as cur:
             cur.execute('''SELECT
-                    id, status_code, h1, title, desription,
+                    id, status_code, h1, title, description,
                     created_at FROM url_checks
                     WHERE url_id = %s ORDER BY id DESC''', (id,))
             url_checks = cur.fetchall()
@@ -133,12 +133,12 @@ def url_check(id):
             url_data = get_seo(check.text)
             title = url_data('title')
             h1 = url_data('h1')
-            description = url_data('desription')
+            description = url_data('description')
             with conn.cursor(
               cursor_factory=psycopg2.extras.NamedTupleCursor
             ) as cur:
                 cur.execute('''INSERT INTO url_checks (url_id, status_code,
-                            h1, title, desription, created_at)
+                            h1, title, description, created_at)
                             VALUES (%s, %s, %s, %s, %s, %s)''',
                             (id, status, h1, title, description, 
                              datetime.now().date())
