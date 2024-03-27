@@ -100,7 +100,9 @@ def url_info(id):
         if not url_info:
             abort(404)
     with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor() as cur:
+        with conn.cursor(
+          cursor_factory=psycopg2.extras.NamedTupleCursor
+        ) as cur:
             cur.execute('''SELECT
                     id, status_code, h1, title, description,
                     created_at FROM url_checks
