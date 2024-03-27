@@ -131,18 +131,15 @@ def url_check(id):
             url = url_info.name
         try:
             check = requests.get(url)
-            status = int(check.status_code)
-            url_data = get_seo(check.text)
-            title = url_data['title']
-            h1 = url_data['h1']
-            description = url_data['description']
+            status = check.raise_for_status()
+            title, h1, description = get_seo(check.text)
             with conn.cursor(
               cursor_factory=psycopg2.extras.NamedTupleCursor
             ) as cur:
                 cur.execute('''INSERT INTO url_checks (url_id, status_code,
                             h1, title, description, created_at)
                             VALUES (%s, %s, %s, %s, %s, %s)''',
-                            (id, status, h1, title, str(description), 
+                            (id, status, h1, title, description, 
                              datetime.now().date())
                             )
             flash('Страница успешно проверена', 'alert-success')
