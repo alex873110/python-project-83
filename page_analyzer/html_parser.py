@@ -5,7 +5,7 @@ def get_seo(content):
     data = BeautifulSoup(content, 'html.parser')
     title = data.title
     title = title.string if title else ''
-    h1 = data.h1.text if content.h1 else ''
+    h1 = data.h1.text if data.h1 else ''
     description_tag = data.find("meta", attrs={"name": "description"})
     description = description_tag["content"] if description_tag else ''
     description = description if len(description) < 255 else description[:252] + '...'
