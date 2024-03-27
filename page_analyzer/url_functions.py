@@ -1,7 +1,6 @@
 import validators
 from urllib.parse import urlparse
-import psycopg2
-import psycopg2.extras
+
 
 def normalize_url(url):
     parsed_url = urlparse(url)
@@ -18,5 +17,3 @@ def validate(url):
     if not url:
         errors.append("URL обязателен")
     return errors
-
-

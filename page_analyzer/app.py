@@ -3,10 +3,8 @@ from flask import get_flashed_messages, url_for, abort
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
-from urllib.parse import urlparse
 from page_analyzer.url_functions import normalize_url, validate
 from page_analyzer.html_parser import get_seo
-import validators
 import requests
 from requests import RequestException
 import os
@@ -34,7 +32,9 @@ def get_page_urls():
             urls = cur.fetchall()
             cur.close()
         for url in urls:
-            with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+            with conn.cursor(
+              cursor_factory=psycopg2.extras.RealDictCursor
+            ) as cur:
                 query = '''SELECT status_code, created_at
                    FROM url_checks
                    WHERE url_id = (%s)
@@ -139,7 +139,7 @@ def url_check(id):
                 cur.execute('''INSERT INTO url_checks (url_id, status_code,
                             h1, title, description, created_at)
                             VALUES (%s, %s, %s, %s, %s, %s)''',
-                            (id, status, h1, title, description, 
+                            (id, status, h1, title, description,
                              datetime.now().date())
                             )
             flash('Страница успешно проверена', 'alert-success')
