@@ -130,7 +130,7 @@ def url_check(id):
                 abort(404)
             url = url_info.name
         try:
-            check = requests.get(url)
+            check = requests.get(url, timeout=(3.05, 10))
             status = check.raise_for_status()
             title, h1, description = get_seo(check.text)
             with conn.cursor(
