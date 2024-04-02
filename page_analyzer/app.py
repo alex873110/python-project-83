@@ -33,7 +33,7 @@ def get_page_urls():
             cur.close()
         for url in urls:
             with conn.cursor(
-              cursor_factory=psycopg2.extras.RealDictCursor
+                cursor_factory=psycopg2.extras.RealDictCursor
             ) as cur:
                 query = '''SELECT status_code, created_at
                    FROM url_checks
@@ -65,7 +65,7 @@ def url_add():
     url_normalized = normalize_url(url_name)
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor(
-          cursor_factory=psycopg2.extras.NamedTupleCursor
+            cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
             cur.execute('''SELECT
                         id FROM urls
@@ -90,7 +90,7 @@ def url_add():
 def url_info(id):
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor(
-         cursor_factory=psycopg2.extras.NamedTupleCursor
+            cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
             cur.execute('''SELECT
                     id, name, created_at
@@ -101,7 +101,7 @@ def url_info(id):
             abort(404)
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor(
-          cursor_factory=psycopg2.extras.NamedTupleCursor
+            cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
             cur.execute('''SELECT
                     id, status_code, h1, title, description,
@@ -109,9 +109,9 @@ def url_info(id):
                     WHERE url_id = %s ORDER BY id DESC''', (id,))
             url_checks = cur.fetchall()
     return render_template(
-       'url_info.html',
-       url=url_info, url_checks=url_checks,
-       messages=get_flashed_messages(with_categories=True),
+        'url_info.html',
+        url=url_info, url_checks=url_checks,
+        messages=get_flashed_messages(with_categories=True),
     )
 
 
@@ -120,7 +120,7 @@ def url_check(id):
     id = int(id)
     with psycopg2.connect(DATABASE_URL) as conn:
         with conn.cursor(
-          cursor_factory=psycopg2.extras.NamedTupleCursor
+            cursor_factory=psycopg2.extras.NamedTupleCursor
         ) as cur:
             cur.execute('''SELECT
                     name FROM urls
@@ -135,7 +135,7 @@ def url_check(id):
             status = check.status_code
             title, h1, description = get_seo(check.text)
             with conn.cursor(
-              cursor_factory=psycopg2.extras.NamedTupleCursor
+                cursor_factory=psycopg2.extras.NamedTupleCursor
             ) as cur:
                 cur.execute('''INSERT INTO url_checks (url_id, status_code,
                             h1, title, description, created_at)
