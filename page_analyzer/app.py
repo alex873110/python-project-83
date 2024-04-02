@@ -132,7 +132,7 @@ def url_check(id):
         try:
             check = requests.get(url, timeout=(3.05, 10))
             check.raise_for_status()
-            status = response.status_code
+            status = check.status_code
             title, h1, description = get_seo(check.text)
             with conn.cursor(
               cursor_factory=psycopg2.extras.NamedTupleCursor
