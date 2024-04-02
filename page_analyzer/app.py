@@ -80,7 +80,6 @@ def url_add():
                         )
             conn.commit()
             id = cur.fetchone()[0]
-#        conn.close()
             flash('Страница успешно добавлена', 'alert-success')
         return redirect(url_for('url_info', id=id))
 
