@@ -1,3 +1,4 @@
 .venv
 .env
-
+/dist
+/page_analyzer/__pycache__
