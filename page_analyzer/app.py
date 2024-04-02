@@ -17,9 +17,8 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
 
 @app.route('/')
-def basic():
-    title_text = 'Анализатор страниц'
-    return render_template('basic.html', title_text=title_text)
+def index():
+    return render_template('index.html')
 
 
 @app.get('/urls')
