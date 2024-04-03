@@ -46,5 +46,5 @@ def get_urls():
             else:
                 url['check_date'] = ''
                 url['status_code'] = ''
-     return urls
+    return urls
 
