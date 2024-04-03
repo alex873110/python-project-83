@@ -9,6 +9,7 @@ import requests
 from requests import RequestException
 import os
 from datetime import datetime
+from page_analyzer.db import get_urls
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -23,30 +24,7 @@ def index():
 
 @app.get('/urls')
 def get_page_urls():
-    with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(
-            cursor_factory=psycopg2.extras.RealDictCursor
-        ) as cur:
-            cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
-            urls = cur.fetchall()
-            cur.close()
-        for url in urls:
-            with conn.cursor(
-                cursor_factory=psycopg2.extras.RealDictCursor
-            ) as cur:
-                query = '''SELECT status_code, created_at
-                   FROM url_checks
-                   WHERE url_id = (%s)
-                   ORDER BY id DESC;
-                '''
-                cur.execute(query, [url['id']])
-                last_check = cur.fetchone()
-                if last_check:
-                    url['check_date'] = last_check['created_at'].date()
-                    url['status_code'] = last_check['status_code']
-                else:
-                    url['check_date'] = ''
-                    url['status_code'] = ''
+    urls = get_urls()
     return render_template('urls.html', urls=urls)
 
 
