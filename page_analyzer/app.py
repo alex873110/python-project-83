@@ -9,7 +9,8 @@ import requests
 from requests import RequestException
 import os
 from datetime import datetime
-from page_analyzer.db import get_urls, check_db_for_url, insert_url
+from page_analyzer.db import check_db_for_url, insert_url, get_url_by_id
+from page_analyzer.db import get_url_checks, get_urls
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -51,26 +52,10 @@ def url_add():
 
 @app.get('/urls/<id>')
 def url_info(id):
-    with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(
-            cursor_factory=psycopg2.extras.NamedTupleCursor
-        ) as cur:
-            cur.execute('''SELECT
-                    id, name, created_at
-                    FROM urls
-                    WHERE id = %s''', (id,))
-            url_info = cur.fetchone()
-        if not url_info:
-            abort(404)
-    with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(
-            cursor_factory=psycopg2.extras.NamedTupleCursor
-        ) as cur:
-            cur.execute('''SELECT
-                    id, status_code, h1, title, description,
-                    created_at FROM url_checks
-                    WHERE url_id = %s ORDER BY id DESC''', (id,))
-            url_checks = cur.fetchall()
+    url_info = get_url_by_id(id)
+    if not url_info:
+        abort(404)
+    url_checks = get_url_checks(id)
     return render_template(
         'url_info.html',
         url=url_info, url_checks=url_checks,

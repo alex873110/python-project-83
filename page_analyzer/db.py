@@ -73,3 +73,29 @@ def insert_url(url_name):
         conn.commit()
         id = cur.fetchone()[0]
     return id
+
+
+def get_url_by_id(id):
+    conn = get_connection()
+    with conn.cursor(
+        cursor_factory=psycopg2.extras.NamedTupleCursor
+    ) as cur:
+        cur.execute('''SELECT
+                id, name, created_at
+                FROM urls
+                WHERE id = %s''', (id,))
+        url_info = cur.fetchone()
+    return url_info
+
+
+def get_url_checks(id):
+    conn = get_connection()
+    with conn.cursor(
+        cursor_factory=psycopg2.extras.NamedTupleCursor
+    ) as cur:
+        cur.execute('''SELECT
+                    id, status_code, h1, title, description,
+                    created_at FROM url_checks
+                    WHERE url_id = %s ORDER BY id DESC''', (id,))
+        url_checks = cur.fetchall()
+    return url_checks
