@@ -1,14 +1,11 @@
 from flask import Flask, render_template, request, flash, redirect
 from flask import get_flashed_messages, url_for, abort
-import psycopg2
-import psycopg2.extras
 from dotenv import load_dotenv
 from page_analyzer.url_functions import normalize_url, validate
 from page_analyzer.html_parser import get_seo
 import requests
 from requests import RequestException
 import os
-from datetime import datetime
 from page_analyzer.db import check_db_for_url, insert_url, get_url_by_id
 from page_analyzer.db import get_url_checks, get_urls, insert_check
 
