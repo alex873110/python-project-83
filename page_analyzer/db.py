@@ -99,3 +99,16 @@ def get_url_checks(id):
                     WHERE url_id = %s ORDER BY id DESC''', (id,))
         url_checks = cur.fetchall()
     return url_checks
+
+
+def insert_check(id, status, h1, title, description):
+    conn = get_connection()
+    with conn.cursor(
+        cursor_factory=psycopg2.extras.NamedTupleCursor
+    ) as cur:
+        cur.execute('''INSERT INTO url_checks (url_id,status_code,
+                    h1, title, description, created_at)
+                    VALUES (%s, %s, %s, %s, %s, %s)''',
+                    (id, status, h1, title, description,
+                     datetime.now().date()))
+        conn.commit()

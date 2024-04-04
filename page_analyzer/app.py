@@ -10,7 +10,7 @@ from requests import RequestException
 import os
 from datetime import datetime
 from page_analyzer.db import check_db_for_url, insert_url, get_url_by_id
-from page_analyzer.db import get_url_checks, get_urls
+from page_analyzer.db import get_url_checks, get_urls, insert_check
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -66,33 +66,17 @@ def url_info(id):
 @app.post('/urls/<id>/checks')
 def url_check(id):
     id = int(id)
-    with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(
-            cursor_factory=psycopg2.extras.NamedTupleCursor
-        ) as cur:
-            cur.execute('''SELECT
-                    name FROM urls
-                    WHERE id = %s''', (id,))
-            url_info = cur.fetchone()
-            if not url_info:
-                abort(404)
-            url = url_info.name
-        try:
-            check = requests.get(url, timeout=(3.05, 10))
-            check.raise_for_status()
-            status = check.status_code
-            title, h1, description = get_seo(check.text)
-            with conn.cursor(
-                cursor_factory=psycopg2.extras.NamedTupleCursor
-            ) as cur:
-                cur.execute('''INSERT INTO url_checks (url_id, status_code,
-                            h1, title, description, created_at)
-                            VALUES (%s, %s, %s, %s, %s, %s)''',
-                            (id, status, h1, title, description,
-                             datetime.now().date())
-                            )
-            flash('Страница успешно проверена', 'alert-success')
-            conn.commit()
-        except RequestException:
-            flash('Произошла ошибка при проверке', 'alert-danger')
+    url_info = get_url_by_id(id)
+    if not url_info:
+        abort(404)
+    url = url_info.name
+    try:
+        check = requests.get(url, timeout=(3.05, 10))
+        check.raise_for_status()
+        status = check.status_code
+        title, h1, description = get_seo(check.text)
+        insert_check(id, status, h1, title, description)
+        flash('Страница успешно проверена', 'alert-success')
+    except RequestException:
+        flash('Произошла ошибка при проверке', 'alert-danger')
     return redirect(url_for('url_info', id=id))
