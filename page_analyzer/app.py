@@ -9,7 +9,7 @@ import requests
 from requests import RequestException
 import os
 from datetime import datetime
-from page_analyzer.db import get_urls
+from page_analyzer.db import get_urls, check_db_for_url, insert_url
 
 load_dotenv()
 DATABASE_URL = os.getenv('DATABASE_URL')
@@ -40,26 +40,13 @@ def url_add():
             messages=get_flashed_messages(with_categories=True)
         ), 422
     url_normalized = normalize_url(url_name)
-    with psycopg2.connect(DATABASE_URL) as conn:
-        with conn.cursor(
-            cursor_factory=psycopg2.extras.NamedTupleCursor
-        ) as cur:
-            cur.execute('''SELECT
-                        id FROM urls
-                        WHERE name = %s''', (url_normalized,))
-            url_info = cur.fetchone()
-            if url_info:
-                conn.close
-                flash('Страница уже существует', 'alert-info')
-                return redirect(url_for('url_info', id=url_info.id))
-            cur.execute('''INSERT INTO urls (name, created_at)
-                        VALUES (%s, %s) RETURNING id''',
-                        (url_normalized, datetime.now())
-                        )
-            conn.commit()
-            id = cur.fetchone()[0]
-            flash('Страница успешно добавлена', 'alert-success')
-        return redirect(url_for('url_info', id=id))
+    url_info = check_db_for_url(url_normalized)
+    if url_info:
+        flash('Страница уже существует', 'alert-info')
+        return redirect(url_for('url_info', id=url_info.id))
+    id = insert_url(url_normalized)
+    flash('Страница успешно добавлена', 'alert-success')
+    return redirect(url_for('url_info', id=id))
 
 
 @app.get('/urls/<id>')

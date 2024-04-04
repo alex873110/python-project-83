@@ -48,3 +48,28 @@ def get_urls():
                 url['status_code'] = ''
     return urls
 
+
+def check_db_for_url(url_name):
+    conn = get_connection()
+    with conn.cursor(
+        cursor_factory=psycopg2.extras.NamedTupleCursor
+    ) as cur:
+        cur.execute('''SELECT
+                        id FROM urls
+                        WHERE name = %s''', (url_name,))
+        url_info = cur.fetchone()
+    return url_info
+
+
+def insert_url(url_name):
+    conn = get_connection()
+    with conn.cursor(
+        cursor_factory=psycopg2.extras.NamedTupleCursor
+    ) as cur:
+        cur.execute('''INSERT INTO urls (name, created_at)
+                    VALUES (%s, %s) RETURNING id''',
+                    (url_name, datetime.now())
+                    )
+        conn.commit()
+        id = cur.fetchone()[0]
+    return id
