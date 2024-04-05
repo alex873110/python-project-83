@@ -1,4 +1,3 @@
-from flask import Flask
 import psycopg2
 import psycopg2.extras
 from dotenv import load_dotenv
