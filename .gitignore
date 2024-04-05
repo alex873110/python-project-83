@@ -2,3 +2,5 @@
 .env
 /dist
 /page_analyzer/__pycache__
+.coverage
+coverage.xml
