@@ -37,7 +37,7 @@ def get_urls():
     return urls
 
 
-def check_db_for_url(url_name):
+def get_url_by_name(url_name):
     conn = get_connection()
     with conn.cursor(
         cursor_factory=psycopg2.extras.NamedTupleCursor
