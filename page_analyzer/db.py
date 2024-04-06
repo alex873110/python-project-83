@@ -29,7 +29,7 @@ def get_urls():
             url_id, status_code, created_at
             FROM url_checks
             ORDER BY url_id, created_at DESC;''')
-            last_checks = cur.fetchall()
+        last_checks = cur.fetchall()
     for url in urls:
         for last_check in last_checks:
             if url['id'] = last_check['url_id']:
