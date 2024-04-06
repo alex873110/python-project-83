@@ -21,7 +21,6 @@ def get_urls():
         cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
         urls = cur.fetchall()
         cur.close()
-   # for url in urls:
     with conn.cursor(
         cursor_factory=psycopg2.extras.RealDictCursor
     ) as cur:
