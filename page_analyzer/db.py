@@ -98,5 +98,5 @@ def insert_check(id, status, h1, title, description):
                     h1, title, description, created_at)
                     VALUES (%s, %s, %s, %s, %s, %s)''',
                     (id, status, h1, title, description,
-                     datetime.now().date()))
+                    datetime.now().date()))
             conn.commit()
