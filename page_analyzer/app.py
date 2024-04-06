@@ -6,7 +6,7 @@ from page_analyzer.html_parser import get_seo
 import requests
 from requests import RequestException
 import os
-from page_analyzer.db import check_db_for_url, insert_url, get_url_by_id
+from page_analyzer.db import get_url_by_name, insert_url, get_url_by_id
 from page_analyzer.db import get_url_checks, get_urls, insert_check
 
 load_dotenv()
@@ -38,7 +38,7 @@ def url_add():
             messages=get_flashed_messages(with_categories=True)
         ), 422
     url_normalized = normalize_url(url_name)
-    url_info = check_db_for_url(url_normalized)
+    url_info = get_url_by_name(url_normalized)
     if url_info:
         flash('Страница уже существует', 'alert-info')
         return redirect(url_for('url_info', id=url_info.id))
