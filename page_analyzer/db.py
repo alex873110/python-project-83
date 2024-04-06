@@ -21,23 +21,20 @@ def get_urls():
         cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
         urls = cur.fetchall()
         cur.close()
+   # for url in urls:
+    with conn.cursor(
+        cursor_factory=psycopg2.extras.RealDictCursor
+    ) as cur:
+        cur.execute('''SELECT DISTINCT ON (url_id)
+            url_id, status_code, created_at
+            FROM url_checks
+            ORDER BY url_id, created_at DESC;''')
+            last_checks = cur.fetchall()
     for url in urls:
-        with conn.cursor(
-            cursor_factory=psycopg2.extras.RealDictCursor
-        ) as cur:
-            query = '''SELECT status_code, created_at
-                FROM url_checks
-                WHERE url_id = (%s)
-                ORDER BY id DESC;
-            '''
-            cur.execute(query, [url['id']])
-            last_check = cur.fetchone()
-            if last_check:
+        for last_check in last_checks:
+            if url['id'] = last_check['url_id']:
                 url['check_date'] = last_check['created_at'].date()
                 url['status_code'] = last_check['status_code']
-            else:
-                url['check_date'] = ''
-                url['status_code'] = ''
     return urls
 
 
