@@ -26,8 +26,8 @@
               {{url.name}}
             </a>
           </td>
-          <td> {{url['check_date']}}</td>
-          <td> {{url['status_code']}}</td>
+          <td> {{url.get('check_date', '')}}</td>
+          <td> {{url.get('status_code', '')}}</td>
         </tr>
         {% endfor %}
         {% endif %}  
