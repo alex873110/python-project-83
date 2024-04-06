@@ -32,7 +32,7 @@ def get_urls():
         last_checks = cur.fetchall()
     for url in urls:
         for last_check in last_checks:
-            if url['id'] = last_check['url_id']:
+            if url['id'] == last_check['url_id']:
                 url['check_date'] = last_check['created_at'].date()
                 url['status_code'] = last_check['status_code']
     return urls
