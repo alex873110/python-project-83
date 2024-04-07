@@ -35,7 +35,6 @@ def url_add():
             flash(error, 'alert-danger')
         return render_template(
             'index.html',
-            messages=get_flashed_messages(with_categories=True)
         ), 422
     url_normalized = normalize_url(url_name)
     url_info = get_url_by_name(url_normalized)
@@ -56,7 +55,6 @@ def url_info(id):
     return render_template(
         'url_info.html',
         url=url_info, url_checks=url_checks,
-        messages=get_flashed_messages(with_categories=True),
     )
 
 
