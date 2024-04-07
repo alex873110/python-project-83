@@ -10,7 +10,7 @@ For instsall run `git clone git@github.com:alex873110/python-project-50.git`, `c
 `make install`.
 
 # About project
-Page analyzer is a Web Service based on Flask. 
+Page analyzer is a Web Service based on Flask.  
 Page Analyzer is a Website that analyzes specified pages for SEO suitability, similar to PageSpeed ​​Insights.
 
 # Technologies Used  
