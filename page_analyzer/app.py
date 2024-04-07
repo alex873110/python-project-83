@@ -1,5 +1,5 @@
 from flask import Flask, render_template, request, flash, redirect
-from flask import get_flashed_messages, url_for, abort
+from flask import url_for, abort
 from dotenv import load_dotenv
 from page_analyzer.url import normalize_url, validate
 from page_analyzer.html_parser import get_seo
