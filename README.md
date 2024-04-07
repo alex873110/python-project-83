@@ -17,6 +17,6 @@ Page Analyzer is a Website that analyzes specified pages for SEO suitability, si
 > - Python   
 > - Flask  
 > - HTML/CSS
-> - SQL.
+> - SQL
 
 
