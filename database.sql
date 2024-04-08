@@ -3,7 +3,7 @@ DROP TABLE IF EXISTS urls CASCADE;
 CREATE TABLE urls (
     id SERIAL PRIMARY KEY,
     name varchar(255) UNIQUE NOT NULL,
-    created_at date NOT NULL DEFAULT now()
+    created_at datetime NOT NULL DEFAULT now()
 );
 
 DROP TABLE IF EXISTS url_checks;
