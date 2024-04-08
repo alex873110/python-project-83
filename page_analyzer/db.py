@@ -20,10 +20,6 @@ def get_urls():
         ) as cur:
             cur.execute('''SELECT id, name FROM urls ORDER BY id DESC''')
             urls = cur.fetchall()
-            cur.close()
-        with conn.cursor(
-            cursor_factory=psycopg2.extras.RealDictCursor
-        ) as cur:
             cur.execute('''SELECT DISTINCT ON (url_id)
                 url_id, status_code, created_at
                 FROM url_checks
