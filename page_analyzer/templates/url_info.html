@@ -46,7 +46,7 @@
         <tr>
           <td>{{id}}</td>
           <td>{{status_code}}</td>
-          <td>{{h1}}{%if len(h1) = 255%}...{%endif%}</td>
+          <td>{{h1}}{% if len(h1) == 255 %}...{% endif %}</td>
           <td>{{title}}</td>
           <td>{{description}}</td>
           <td>{{created_at.date()}}</td>
