@@ -47,8 +47,8 @@
           <td>{{id}}</td>
           <td>{{status_code}}</td>
           <td>{{h1}}{% if h1|length == 255 %}...{% endif %}</td>
-          <td>{{title}}{% if title|length > 254 %}...{% endif %}</td>
-          <td>{{description}}{% if description|length > 254 %}...{% endif %}</td>
+          <td>{{title}}{% if title|length == 255 %}...{% endif %}</td>
+          <td>{{description}}{% if description|length == 255 %}...{% endif %}</td>
           <td>{{created_at.date()}}</td>
         </tr>
         {% endfor %}
