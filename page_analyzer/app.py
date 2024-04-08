@@ -2,7 +2,7 @@ from flask import Flask, render_template, request, flash, redirect
 from flask import url_for, abort
 from dotenv import load_dotenv
 from page_analyzer.url import normalize_url, validate
-from page_analyzer.html_parser import get_seo
+from page_analyzer.html_parser import get_seo_data
 import requests
 from requests import RequestException
 import os
@@ -69,7 +69,7 @@ def url_check(id):
         check = requests.get(url, timeout=(3.05, 10))
         check.raise_for_status()
         status = check.status_code
-        title, h1, description = get_seo(check.text)
+        title, h1, description = get_seo_data(check.text)
         insert_check(id, status, h1, title, description)
         flash('Страница успешно проверена', 'alert-success')
     except RequestException:
