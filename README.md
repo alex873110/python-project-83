@@ -8,6 +8,10 @@ CI](https://github.com/alex873110/python-project-83/actions/workflows/main.yml/b
 # Installation
 For instsall run `git clone git@github.com:alex873110/python-project-50.git`, `cd python-project-83`,
 `make install`.
+### For local use
+run `export DATABASE_URL=postgresql://{your database link}`  
+run `export SECRET_KEY={your secret key for flask app}`
+run `make start`
 
 # About project
 Page analyzer is a Web Service based on Flask.  
